@@ -10,6 +10,7 @@ import ru.redcollar.test.model.repositories.EmployeeRepository;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -22,14 +23,21 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
+    public List<EmployeeEntity> findUser(String name){
+        return employeeRepository.findByName(name);
+    }
+
     public EmployeeDto createEmployee(String surname, String name, String patronymic,
                                       Timestamp dateOfBirth, Long phoneNumber,
                                       String position, Long salary, Long experience,
                                       String workingSchedule, Long seniorityAllowance) throws LockedAgeException {
 
-        if(!ValidateService.validateAge(dateOfBirth)){
-            throw new LockedAgeException("Извините, вам должно быть 18!");
-        }
+//        if(!ValidateService.validateAge(dateOfBirth)){
+//            throw new LockedAgeException("Извините, вам должно быть 18!");
+//        }
+
+        ValidateService.validateAge(dateOfBirth);
+
 
         EmployeeEntity employee = employeeRepository.save(
                 EmployeeEntity.builder()

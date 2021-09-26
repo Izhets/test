@@ -1,30 +1,27 @@
 package ru.redcollar.test.model.entities;
 
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.Instant;
 
 
 @Setter
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "employee")
+
 public class EmployeeEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String surname;
-    private String name;
+    public String name;
     private String patronymic;
 
     private Timestamp dateOfBirth;
@@ -36,4 +33,11 @@ public class EmployeeEntity {
     private String workingSchedule;
     private Long seniorityAllowance;
 
+    public EmployeeEntity(String name){
+        this.name = name;
+    }
+
+    public EmployeeEntity() {
+
+    }
 }

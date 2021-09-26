@@ -6,6 +6,7 @@ import ru.redcollar.test.model.entities.EmployeeEntity;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -13,7 +14,9 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> 
 
     Optional<EmployeeEntity> findBySurname(String surname);
 
-    Optional<EmployeeEntity> findByName(String name);
+    List<EmployeeEntity> findByName(String name);
+
+    //Optional<EmployeeEntity> findByName(String name);
 
     Optional<EmployeeEntity> findByPatronymic(String patronymic);
 

@@ -10,6 +10,7 @@ import ru.redcollar.test.model.entities.EmployeeEntity;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 // TODO: все параметры в RequestBody
 
@@ -42,5 +43,11 @@ public class EmployeeController {
         public List<EmployeeEntity> findAllEmployees(){
             return employeeService.getAllEmployees();
     }
+
+    @GetMapping("/employeesNames")
+    public List<EmployeeEntity> findUserByName(@RequestParam String name){
+        return employeeService.findUser(name);
+    }
+
 
 }
