@@ -1,4 +1,4 @@
-package ru.redcollar.test.entities;
+package ru.redcollar.test.model.entities;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +24,6 @@ import java.time.Instant;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "tikets")
 public class TicketEntity {

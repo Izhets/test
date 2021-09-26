@@ -1,12 +1,8 @@
-package ru.redcollar.test.api.factories;
+package ru.redcollar.test.model.factories;
 
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
-import ru.redcollar.test.api.dto.EmployeeDto;
-import ru.redcollar.test.entities.EmployeeEntity;
-
-import java.sql.Time;
+import ru.redcollar.test.model.dto.EmployeeDto;
+import ru.redcollar.test.model.entities.EmployeeEntity;
 
 @Component
 public class EmployeeDtoFactory {

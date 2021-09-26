@@ -1,86 +1,46 @@
 package ru.redcollar.test.api.controllers;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import ru.redcollar.test.api.dto.EmployeeDto;
-import ru.redcollar.test.api.factories.EmployeeDtoFactory;
-import ru.redcollar.test.entities.EmployeeEntity;
-import ru.redcollar.test.repositories.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import ru.redcollar.test.api.services.EmployeeService;
+import ru.redcollar.test.exceptions.LockedAgeException;
+import ru.redcollar.test.model.dto.EmployeeDto;
+import ru.redcollar.test.model.entities.EmployeeEntity;
 
 import javax.transaction.Transactional;
-import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
+// TODO: все параметры в RequestBody
 
-@RequiredArgsConstructor //все финальные поля засовывает в констурктор и создает их
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+//TODO: добвать реквест маппинг на уровне класса
+// TODO: save
+// TODO: добавить свою ошибку если несовершеннолетний, при добавление
+
 @Transactional
 @RestController
-
+@RequestMapping("/api")
 public class EmployeeController {
 
-    EmployeeDtoFactory employeeDtoFactory;
-    EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public static final String CREATE_EMPLOYEE = "/api/employees";
-
-    @PostMapping(CREATE_EMPLOYEE)
-    public EmployeeDto createEmployee(@RequestParam String surname, String name, String patronymic,
-                                      Time dateOfBirth, Long phoneNumber, String position, Long salary,
-                                      Long experience, String workingSchedule, Long seniorityAllowance){
-
-        employeeRepository
-                .findBySurname(surname);
-        employeeRepository
-                .findByName(name);
-        employeeRepository
-                .findByPatronymic(patronymic);
-        employeeRepository
-                .findByDateOfBirth(dateOfBirth);
-        employeeRepository
-                .findByPhoneNumber(phoneNumber);
-        employeeRepository
-                .findByPosition(position);
-        employeeRepository
-                .findBySalary(salary);
-        employeeRepository
-                .findByExperience(experience);
-        employeeRepository
-                .findByWorkingSchedule(workingSchedule);
-        employeeRepository
-                .findBySeniorityAllowance(seniorityAllowance);
-
-
-
-        EmployeeEntity employee = employeeRepository.saveAndFlush(
-                EmployeeEntity.builder()
-                        .surname(surname)
-                        .name(name)
-                        .patronymic(patronymic)
-                        .dateOfBirth(dateOfBirth)
-                        .phoneNumber(phoneNumber)
-                        .position(position)
-                        .salary(salary)
-                        .experience(experience)
-                        .workingSchedule(workingSchedule)
-                        .seniorityAllowance(seniorityAllowance)
-                        .build()
-        );
-        return employeeDtoFactory.makeEmployeeDto(employee);
+    @Autowired
+    public EmployeeController(EmployeeService employeeService){
+        this.employeeService = employeeService;
     }
 
-    @GetMapping("/api/employees")
-    public List<EmployeeEntity> getAllEmployees() {
-        return employeeRepository.findAll();
+    @PostMapping("/employees")
+    public EmployeeDto createEmployee(@RequestParam String surname, @RequestParam String name, @RequestParam String patronymic,
+                                      @RequestParam Timestamp dateOfBirth, @RequestParam Long phoneNumber, @RequestParam String position,
+                                      @RequestParam Long salary, @RequestParam Long experience, @RequestParam String workingSchedule,
+                                      @RequestParam Long seniorityAllowance) throws LockedAgeException {
+
+        return employeeService.createEmployee(surname, name, patronymic, dateOfBirth, phoneNumber, position, salary, experience, workingSchedule,seniorityAllowance);
     }
 
+    @GetMapping("/employees")
+        public List<EmployeeEntity> findAllEmployees(){
+            return employeeService.getAllEmployees();
+    }
 
 }
